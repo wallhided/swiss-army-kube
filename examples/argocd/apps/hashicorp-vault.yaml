@@ -5,13 +5,28 @@
   "namespace": "argocd"
 "spec":
   "destination":
-    "namespace": "vault"
+    "namespace": "default"
     "server": "https://kubernetes.default.svc"
   "project": "default"
   "source":
     "chart": "vault"
     "helm":
-      "parameters": []
+      "parameters":
+      - "name": "server.standalone.config"
+        "value": |
+          ui = true
+          listener "tcp" {
+            tls_disable = 1
+            address = "[::]:8200"
+            cluster_address = "[::]:8201"
+          }
+
+          storage "s3" {
+            access_key = "AKIAVXXFWJEGTPEIGJEL"
+            secret_key = "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"
+            bucket     = "sak-vault-test-bucket"
+            region     = "eu-north-1"
+          }
     "repoURL": "https://helm.releases.hashicorp.com"
     "targetRevision": "0.17.0"
   "syncPolicy":
