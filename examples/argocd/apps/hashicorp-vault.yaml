@@ -2,10 +2,10 @@
 "kind": "Application"
 "metadata":
   "name": "hashicorp-vault"
-  "namespace": "vault"
+  "namespace": "argocd"
 "spec":
   "destination":
-    "namespace": "default"
+    "namespace": "vault"
     "server": "https://kubernetes.default.svc"
   "project": "default"
   "source":
