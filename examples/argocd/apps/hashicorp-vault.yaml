@@ -2,7 +2,7 @@
 "kind": "Application"
 "metadata":
   "name": "hashicorp-vault"
-  "namespace": "default"
+  "namespace": "vault"
 "spec":
   "destination":
     "namespace": "default"
@@ -11,17 +11,7 @@
   "source":
     "chart": "vault"
     "helm":
-      "parameters":
-      - "name": "rbac.create"
-        "value": "true"
-      - "name": "resources.limits.cpu"
-        "value": "100m"
-      - "name": "resources.limits.memory"
-        "value": "300Mi"
-      - "name": "resources.requests.cpu"
-        "value": "100m"
-      - "name": "resources.requests.memory"
-        "value": "300Mi"
+      "parameters": []
     "repoURL": "https://helm.releases.hashicorp.com"
     "targetRevision": "0.17.0"
   "syncPolicy":
