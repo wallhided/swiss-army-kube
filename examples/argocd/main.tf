@@ -38,23 +38,33 @@ module "kubernetes" {
   on_demand_gpu_instance_type = "g4dn.xlarge"
 }
 
-module "argocd" {
-  depends_on = [module.network.vpc_id, module.kubernetes.cluster_name, data.aws_eks_cluster.cluster]
-  source     = "github.com/provectus/sak-argocd"
-
-  branch       = var.argocd.branch
-  owner        = var.argocd.owner
-  repository   = var.argocd.repository
-  cluster_name = module.kubernetes.cluster_name
-  path_prefix  = "examples/argocd/"
-
-  domains = local.domain
-  ingress_annotations = {
-    "nginx.ingress.kubernetes.io/ssl-redirect" = "false"
-    "kubernetes.io/ingress.class"              = "nginx"
-  }
-  conf = {
-    "server.service.type"     = "ClusterIP"
-    "server.ingress.paths[0]" = "/"
-  }
-}
+# module "argocd" {
+#   depends_on = [module.network.vpc_id, module.kubernetes.cluster_name, data.aws_eks_cluster.cluster]
+#   source     = "github.com/provectus/sak-argocd"
+#
+#   branch       = var.argocd.branch
+#   owner        = var.argocd.owner
+#   repository   = var.argocd.repository
+#   cluster_name = module.kubernetes.cluster_name
+#   path_prefix  = "examples/argocd/"
+#
+#   domains = local.domain
+#   ingress_annotations = {
+#     "nginx.ingress.kubernetes.io/ssl-redirect" = "false"
+#     "kubernetes.io/ingress.class"              = "nginx"
+#   }
+#   conf = {
+#     "server.service.type"     = "ClusterIP"
+#     "server.ingress.paths[0]" = "/"
+#   }
+# }
+#
+# module "vault" {
+#   source           = "../../../../sak/sak-incubator/hashicorp-vault/" # path of module folder
+#   cluster_name     = "swiss-army-kube"
+#   argocd           = module.argocd.state
+#   s3_storage       = true
+#   s3_create_bucket = true
+#   s3_bucket_name   = "sak-vault-test-bucket"
+#   s3_bucket_region = "eu-north-1"
+# }
