@@ -2,7 +2,7 @@
 "kind": "Application"
 "metadata":
   "name": "hashicorp-vault"
-  "namespace": "vault"
+  "namespace": "default"
 "spec":
   "destination":
     "namespace": "default"
