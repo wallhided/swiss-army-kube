@@ -22,21 +22,6 @@
         "value": "100m"
       - "name": "resources.requests.memory"
         "value": "300Mi"
-      - "name": "server.standalone.config"
-        "value": |
-          ui = true
-          listener "tcp" {
-            tls_disable = 1
-            address = "[::]:8200"
-            cluster_address = "[::]:8201"
-          }
-
-          storage "s3" {
-            access_key = "AKIAVXXFWJEGWGVQOON2"
-            secret_key = "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"
-            bucket     = "sak-vault-test-bucket"
-            region     = "eu-north-1"
-          }
     "repoURL": "https://helm.releases.hashicorp.com"
     "targetRevision": "0.17.0"
   "syncPolicy":
