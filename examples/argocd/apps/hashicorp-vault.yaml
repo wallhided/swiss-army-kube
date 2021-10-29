@@ -5,7 +5,7 @@
   "namespace": "argocd"
 "spec":
   "destination":
-    "namespace": "default"
+    "namespace": "vault"
     "server": "https://kubernetes.default.svc"
   "project": "default"
   "source":
@@ -21,12 +21,13 @@
             cluster_address = "[::]:8201"
           }
 
-          storage "s3" {
-            access_key = "AKIAVXXFWJEGTPEIGJEL"
-            secret_key = "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"
-            bucket     = "sak-vault-test-bucket"
-            region     = "eu-north-1"
+          storage "file" {
+            path = "/vault/data"
           }
+      - "name": "server.volumes[0].name"
+        "value": "efs"
+      - "name": "server.volumes[0].persistentVolumeClaim.claimName"
+        "value": "efs-pvc"
     "repoURL": "https://helm.releases.hashicorp.com"
     "targetRevision": "0.17.0"
   "syncPolicy":
