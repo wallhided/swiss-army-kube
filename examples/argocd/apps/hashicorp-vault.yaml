@@ -21,8 +21,8 @@
           }
 
           storage "s3" {
-            access_key = "AKIAVXXFWJEG77NRMCPN"
-            secret_key = "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"
+            access_key = "AKIAVXXFWJEG63536HXS"
+            secret_key = "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"
             bucket     = "sak-vault-test-bucket"
             region     = "eu-north-1"
           }
