@@ -58,3 +58,21 @@ module "argocd" {
     "server.ingress.paths[0]" = "/"
   }
 }
+
+# module "vault" {
+#   source           = "../../../../sak/sak-incubator/hashicorp-vault/" # path of module folder
+#   cluster_name     = "swiss-army-kube"
+#   argocd           = module.argocd.state
+#   s3_storage       = true
+#   s3_create_bucket = true
+#   s3_bucket_name   = "sak-vault-test-bucket"
+#   s3_bucket_region = "eu-north-1"
+# }
+
+module "efs" {
+  source       = "../../../../sak/sak-incubator/storage/efs/" # path of module folder
+  cluster_name = "swiss-army-kube"
+  argocd       = module.argocd.state
+  aws_region   = "eu-north-1"
+  efs_name     = "sak-efs-folder"
+}
