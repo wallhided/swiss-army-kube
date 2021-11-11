@@ -5,7 +5,7 @@ metadata:
   name: efs-sc
 parameters:
   directoryPerms: 700
-  fileSystemId: fs-01a9d0b919cea438f
+  fileSystemId: fs-09922242a12fd9ed7
   provisioningMode: efs-ap
 provisioner: efs.csi.aws.com
 reclaimPolicy: Retain
