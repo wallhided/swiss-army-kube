@@ -1,0 +1,20 @@
+"apiVersion": "argoproj.io/v1alpha1"
+"kind": "Application"
+"metadata":
+  "name": "aws-efs-csi-driver"
+  "namespace": "argocd"
+"spec":
+  "destination":
+    "namespace": "kube-system"
+    "server": "https://kubernetes.default.svc"
+  "project": "default"
+  "source":
+    "path": "examples/argocd/apps/efs"
+    "plugin":
+      "name": "decryptor"
+    "repoURL": "https://github.com/wallhided/swiss-army-kube"
+    "targetRevision": "efs_test"
+"syncPolicy":
+  "automated":
+    "prune": true
+    "selfHeal": true

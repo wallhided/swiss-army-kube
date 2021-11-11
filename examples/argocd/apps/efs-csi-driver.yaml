@@ -1,0 +1,22 @@
+"apiVersion": "argoproj.io/v1alpha1"
+"kind": "Application"
+"metadata":
+  "name": "aws-efs-csi-driver"
+  "namespace": "argocd"
+"spec":
+  "destination":
+    "namespace": "kube-system"
+    "server": "https://kubernetes.default.svc"
+  "project": "default"
+  "source":
+    "chart": "aws-efs-csi-driver"
+    "helm":
+      "parameters":
+      - "name": "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+        "value": "arn:aws:iam::394544957709:role/swiss-army-kube-efs-csi-driver"
+    "repoURL": "https://kubernetes-sigs.github.io/aws-efs-csi-driver"
+    "targetRevision": "2.2.0"
+  "syncPolicy":
+    "automated":
+      "prune": true
+      "selfHeal": true
