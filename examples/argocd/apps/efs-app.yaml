@@ -14,7 +14,7 @@
       "name": "decryptor"
     "repoURL": "https://github.com/wallhided/swiss-army-kube"
     "targetRevision": "efs_test"
-"syncPolicy":
-  "automated":
-    "prune": true
-    "selfHeal": true
+  "syncPolicy":
+    "automated":
+      "prune": true
+      "selfHeal": true
