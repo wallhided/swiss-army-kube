@@ -12,7 +12,7 @@
     "chart": "aws-efs-csi-driver"
     "helm":
       "parameters":
-        "name": "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+      - "name": "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
         "value": "arn:aws:iam::394544957709:role/swiss-army-kube-efs-csi-driver"
     "repoURL": "https://kubernetes-sigs.github.io/aws-efs-csi-driver"
     "targetRevision": "2.2.0"
