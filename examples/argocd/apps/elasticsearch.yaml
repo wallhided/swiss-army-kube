@@ -1,0 +1,26 @@
+"apiVersion": "argoproj.io/v1alpha1"
+"kind": "Application"
+"metadata":
+  "name": "elasticsearch"
+  "namespace": "argocd"
+"spec":
+  "destination":
+    "namespace": "logging"
+    "server": "https://kubernetes.default.svc"
+  "project": "default"
+  "source":
+    "chart": "elasticsearch"
+    "helm":
+      "parameters":
+      - "name": "minimumMasterNodes"
+        "value": "2"
+      - "name": "replicas"
+        "value": "3"
+      - "name": "volumeClaimTemplate.resources.requests.storage"
+        "value": "30Gi"
+    "repoURL": "https://helm.elastic.co/"
+    "targetRevision": "7.10.1"
+  "syncPolicy":
+    "automated":
+      "prune": true
+      "selfHeal": true

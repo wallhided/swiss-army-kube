@@ -1,0 +1,90 @@
+"apiVersion": "argoproj.io/v1alpha1"
+"kind": "Application"
+"metadata":
+  "name": "filebeat"
+  "namespace": "argocd"
+"spec":
+  "destination":
+    "namespace": "logging"
+    "server": "https://kubernetes.default.svc"
+  "project": "default"
+  "source":
+    "chart": "filebeat"
+    "helm":
+      "values": |
+        "filebeatConfig":
+          "filebeat\\.yml":
+            "filebeat.autodiscover":
+            - "providers":
+              - "hints.enabled": true
+                "templates":
+                - "condition.equals":
+                  - "config":
+                    - "access":
+                        "enabled": "true"
+                        "var.paths":
+                        - "/var/log/nginx/access.log*"
+                      "error":
+                        "enabled": true
+                        "var.paths":
+                        - "/var/log/nginx/error.log*"
+                      "module": "nginx"
+                    "kubernetes.labels.logtype": "nginx"
+                  "config":
+                  - "exclude_lines":
+                    - "^\\s+[\\-`('.|_]"
+                    "paths":
+                    - "/var/log/containers/*-test.log"
+                    "type": "container"
+                "type": "kubernetes"
+            "filebeat.inputs":
+            - "paths":
+              - "/var/log/containers/*.log"
+              "processors":
+              - "add_kubernetes_metadata":
+                  "host": "${NODE_NAME}"
+                  "matchers":
+                  - "logs_path":
+                      "logs_path": "/var/log/containers/"
+              "stream": "all"
+              "type": "container"
+            "filebeat.modules":
+            - "auth":
+                "enabled": true
+              "module": "system"
+              "syslog":
+                "enabled": true
+            "output.elasticsearch":
+              "host": "$\\{NODE_NAME\\}"
+              "hosts": "$\\{ELASTICSEARCH_HOSTS:elasticsearch-master:9200\\}"
+            "processors":
+            - "add_cloud_metadata": "~"
+              "decode_json_fields":
+                "add_error_key": true
+                "fields":
+                - "message"
+                "max_depth": 1
+                "overwrite_keys": true
+                "process_array": false
+                "target": ""
+              "drop_event":
+                "when":
+                  "regexp":
+                    "message": "'(?i)ELB-HealthChecker/2.0'"
+            "setup.dashboards.enabled": true
+            "setup.ilm.check_exists": false
+            "setup.ilm.enabled": "auto"
+            "setup.ilm.overwrite": true
+            "setup.kibana":
+              "host": "https://kibana.example.com:443"
+            "setup.template.enabled": true
+            "setup.template.name": "filebeat"
+            "setup.template.pattern": "filebeat-*"
+            "setup.template.settings":
+              "index.number_of_shards": 1
+    "repoURL": "https://helm.elastic.co/"
+    "targetRevision": "7.10.1"
+  "syncPolicy":
+    "automated":
+      "prune": true
+      "selfHeal": true
