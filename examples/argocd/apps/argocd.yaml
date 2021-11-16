@@ -46,7 +46,7 @@
       - "name": "installCRDs"
         "value": "false"
       - "name": "kubeVersionOverride"
-        "value": "1.18"
+        "value": "1.19"
       - "name": "repoServer.env[0].name"
         "value": "AWS_DEFAULT_REGION"
       - "name": "repoServer.env[0].value"
@@ -85,7 +85,7 @@
             "name": "decryptor"
       - "name": "server.config.repositories"
         "value": |+
-          - url: https://github.com/wallhided/swiss-army-kube
+          - url: x`
             usernameSecret:
               name: argocd-repo-credentials-secret
               key: username
