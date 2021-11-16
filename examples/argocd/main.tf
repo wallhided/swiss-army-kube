@@ -60,11 +60,12 @@ module "argocd" {
 }
 
 module "efk" {
-  depends_on   = [module.argocd]
-  source       = "github.com/provectus/sak-efk"
-  cluster_name = module.kubernetes.cluster_name
-  argocd       = module.argocd.state
-  domains      = local.domain
+  depends_on      = [module.argocd]
+  source          = "github.com/provectus/sak-efk"
+  cluster_name    = module.kubernetes.cluster_name
+  argocd          = module.argocd.state
+  domains         = local.domain
+  elasticReplicas = 2
   kibana_conf = {
     "ingress.annotations.kubernetes\\.io/ingress\\.class"               = "nginx"
     "ingress.annotations.nginx\\.ingress\\.kubernetes\\.io/auth-url"    = "https://auth.example.com/oauth2/auth"
