@@ -11,7 +11,7 @@
   "source":
     "chart": "filebeat"
     "helm":
-      "values": |
+      "values":
         "daemonset.filebeatConfig":
           "filebeat\\.yml":
             "filebeat.autodiscover":

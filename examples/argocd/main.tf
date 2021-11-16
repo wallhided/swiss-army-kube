@@ -61,7 +61,7 @@ module "argocd" {
 
 module "efk" {
   depends_on      = [module.argocd]
-  source          = "github.com/provectus/sak-efk"
+  source          = "../../../../sak/sak-efk"
   cluster_name    = module.kubernetes.cluster_name
   argocd          = module.argocd.state
   domains         = local.domain
