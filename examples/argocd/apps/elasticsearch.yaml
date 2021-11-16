@@ -15,7 +15,7 @@
       - "name": "minimumMasterNodes"
         "value": "2"
       - "name": "replicas"
-        "value": "2"
+        "value": "1"
       - "name": "volumeClaimTemplate.resources.requests.storage"
         "value": "30Gi"
     "repoURL": "https://helm.elastic.co/"
