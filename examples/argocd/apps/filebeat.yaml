@@ -12,7 +12,7 @@
     "chart": "filebeat"
     "helm":
       "values": |
-        "filebeatConfig":
+        "daemonset.filebeatConfig":
           "filebeat\\.yml":
             "filebeat.autodiscover":
               "providers":
