@@ -74,121 +74,145 @@ module "efk" {
   filebeat_conf = {
     "setup.kibana" = {
       "host" = "https://kibana.example.com:443"
-    }
-    "setup.dashboards.enabled" = true
-    "setup.template.enabled"   = true
-    "setup.template.name"      = "filebeat"
-    "setup.template.pattern"   = "filebeat-*"
+    },
+    "setup.dashboards.enabled" = true,
+    "setup.template.enabled"   = true,
+    "setup.template.name"      = "filebeat",
+    "setup.template.pattern"   = "filebeat-*",
     "setup.template.settings" = {
       "index.number_of_shards" = 1
-    }
-    "setup.ilm.enabled"      = "auto"
-    "setup.ilm.check_exists" = false
-    "setup.ilm.overwrite"    = true
-
-    "filebeat.modules" = [{
-      "module" = "system"
-      "syslog" = {
-        "enabled" : true
+    },
+    "setup.ilm.enabled"      = "auto",
+    "setup.ilm.check_exists" = false,
+    "setup.ilm.overwrite"    = true,
+    "filebeat.modules" = [
+      {
+        "module" = "system",
+        "syslog" = {
+          "enabled" = true
+        },
+        "auth" = {
+          "enabled" = true
+        }
       }
-      #var.paths: ["/var/log/syslog"]
-      "auth" = {
-        "enabled" : true
-        #var.paths: ["/var/log/authlog"]
-      }
-    }]
-    "filebeat.inputs" = [{
-      "type" = "container"
-      "paths" = [
-        "/var/log/containers/*.log"
-      ]
-      "stream" = "all"
-      "processors" = [
-        {
-          "add_kubernetes_metadata" = {
-            "host" = "$${NODE_NAME}"
-            "matchers" = [
-              { "logs_path" = {
-                "logs_path" : "/var/log/containers/"
+    ],
+    "filebeat.inputs" = [
+      {
+        "type" = "container",
+        "paths" = [
+          "/var/log/containers/*.log"
+        ],
+        "stream" = "all",
+        "processors" = [
+          {
+            "add_kubernetes_metadata" = {
+              "host" = "$${NODE_NAME}",
+              "matchers" = [
+                {
+                  "logs_path" = {
+                    "logs_path" = "/var/log/containers/"
+                  }
                 }
-
-            }]
+              ]
+            }
           }
+        ]
+      }
+    ],
+    "filebeat.autodiscover" = {
+      "providers" = [
+        {
+          "type"          = "kubernetes",
+          "hints.enabled" = true,
+          "templates" = [
+            {
+              "condition.equals" = {
+                "kubernetes.labels.logging" = true
+              },
+              "config" = [
+                {
+                  "type" = "container",
+                  "paths" = [
+                    "/var/log/containers/*-test.log"
+                  ],
+                  "exclude_lines" = [
+                    "^\\s+[\\-`('.|_]"
+                  ]
+                }
+              ]
+            },
+            {
+              "condition.equals" = {
+                "kubernetes.labels.logtype" = "nginx"
+              },
+              "config" = [
+                {
+                  "module" = "nginx",
+                  "access" = {
+                    "enabled" = true,
+                    "var.paths" = [
+                      "/var/log/nginx/access.log*"
+                    ]
+                  },
+                  "error" = {
+                    "enabled" = true,
+                    "var.paths" = [
+                      "/var/log/nginx/error.log*"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
         }
       ]
-      }
-    ]
-    "filebeat.autodiscover" = [{
-      "providers" = [{
-        "type"          = "kubernetes"
-        "hints.enabled" = true
-        "templates" = [{
-          #Get logs only from pod with label logging=true
-          "condition.equals" = {
-            "kubernetes.labels.logging" : true
+    },
+    "processors" = [
+      {
+        "add_cloud_metadata" = null
+      },
+      {
+        "decode_json_fields" = {
+          "fields" = [
+            "message"
+          ],
+          "process_array"  = false,
+          "max_depth"      = 1,
+          "target"         = "",
+          "overwrite_keys" = true,
+          "add_error_key"  = true
+        }
+      },
+      {
+        "drop_event" = {
+          "when" = {
+            "not" = {
+              "contains" = {
+                "kubernetes.pod.labels.logging" = "true"
+              }
+            }
           }
-          "config" = [{
-            "type" = "container"
-            "paths" = [
-              "/var/log/containers/*-test.log"
-            ]
-            "exclude_lines" = ["^\\s+[\\-`('.|_]"] # drop asciiart lines
-          }]
-          #Parse logs with Nginx grok pattern from container with label logtype=nginx
-          "condition.equals" = [{
-            "kubernetes.labels.logtype" = "nginx"
-            "config" = [{
-              "module" = "nginx"
-              "access" = {
-                "enabled" : "true"
-                "var.paths" : ["/var/log/nginx/access.log*"]
-              }
-              "error" = {
-                "enabled" : true
-                "var.paths" : ["/var/log/nginx/error.log*"]
-              }
-            }]
-          }]
-        }]
-      }]
-    }]
-    "processors" = [{
-      "add_cloud_metadata" = "~"
-      "decode_json_fields" = {
-        "fields"         = ["message"]
-        "process_array"  = false
-        "max_depth"      = 1
-        "target"         = ""
-        "overwrite_keys" = true
-        "add_error_key"  = true
-      }
-      #Drop all logs without labels logging=true
-      "drop_event" = {
-        "when" = {
-          "not" = {
-            "contains" = {
-              "kubernetes.pod.labels.logging" = "true"
+        }
+      },
+      {
+        "drop_event" = {
+          "when" = {
+            "regexp" = {
+              "message" = "(?i)kube-probe/1.18+"
+            }
+          }
+        }
+      },
+      {
+        "drop_event" = {
+          "when" = {
+            "regexp" = {
+              "message" = "(?i)ELB-HealthChecker/2.0"
             }
           }
         }
       }
-      #Drop health checks logs
-      "drop_event" = {
-        "when" = {
-          "regexp" = {
-            "message" = "'(?i)kube-probe/1.18+'"
-          }
-        }
-      }
-      "drop_event" = {
-        "when" = {
-          "regexp" = {
-            "message" = "'(?i)ELB-HealthChecker/2.0'"
-          }
-        }
-      }
-      }
     ]
-
   }
+
 }
