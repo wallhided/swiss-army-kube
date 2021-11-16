@@ -133,7 +133,7 @@ module "efk" {
                 {
                   "type" = "container",
                   "paths" = [
-                    "/var/log/containers/*-test.log"
+                    "/var/log/containers/*-$${data.kubernetes.container.id}.log"
                   ],
                   "exclude_lines" = [
                     "^\\s+[\\-`('.|_]"

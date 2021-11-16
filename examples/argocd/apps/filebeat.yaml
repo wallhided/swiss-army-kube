@@ -24,7 +24,7 @@
                   - "exclude_lines":
                     - "^\\s+[\\-`('.|_]"
                     "paths":
-                    - "/var/log/containers/*-test.log"
+                    - "/var/log/containers/*-${data.kubernetes.container.id}.log"
                     "type": "container"
                 - "condition.equals":
                     "kubernetes.labels.logtype": "nginx"
