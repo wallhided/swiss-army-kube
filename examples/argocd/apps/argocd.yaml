@@ -46,7 +46,7 @@
       - "name": "installCRDs"
         "value": "false"
       - "name": "kubeVersionOverride"
-        "value": "1.19"
+        "value": "1.18"
       - "name": "repoServer.env[0].name"
         "value": "AWS_DEFAULT_REGION"
       - "name": "repoServer.env[0].value"
@@ -85,7 +85,7 @@
             "name": "decryptor"
       - "name": "server.config.repositories"
         "value": |+
-          - url: x`
+          - url: https://github.com/wallhided/swiss-army-kube
             usernameSecret:
               name: argocd-repo-credentials-secret
               key: username
@@ -106,7 +106,7 @@
       "values": |
         "configs":
           "secret":
-            "argocdServerAdminPassword": "$2a$10$9cpg0oS3ECUqb9BlNoslBOvaIHgEF6kOzwjoGcmZo/GbDpuZDk2Ha"
+            "argocdServerAdminPassword": "$2a$10$.CYbpNPFoeiHBVDPZMZD4ekIHoSpKYX6TqWnEw0pPSOA5UOYfBK6i"
     "repoURL": "https://argoproj.github.io/argo-helm"
     "targetRevision": "3.26.1"
   "syncPolicy":
