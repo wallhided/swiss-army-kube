@@ -38,6 +38,18 @@
                       "var.paths":
                       - "/var/log/nginx/error.log*"
                     "module": "nginx"
+                - "condition.equals":
+                    "kubernetes.labels.logtype": "java"
+                  "config":
+                  - "exclude_lines":
+                    - "^\\s+[\\-`('.|_]"
+                    "multiline.match": "after"
+                    "multiline.negate": false
+                    "multiline.pattern": "^[[:space:]]"
+                    "multiline.type": "pattern"
+                    "paths":
+                    - "/var/log/containers/*-${data.kubernetes.container.id}.log"
+                    "type": "container"
                 "type": "kubernetes"
             "filebeat.inputs":
             - "paths":
