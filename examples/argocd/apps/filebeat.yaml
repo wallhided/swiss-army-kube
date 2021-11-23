@@ -39,6 +39,14 @@
                       - "/var/log/nginx/error.log*"
                     "module": "nginx"
                 - "condition.equals":
+                    "kubernetes.labels.logtype": "kafka"
+                  "config":
+                  - "logs":
+                      "enabled": true
+                      "var.paths":
+                      - "/var/log/kafka/*.log*"
+                    "module": "kafka"
+                - "condition.equals":
                     "kubernetes.labels.logtype": "java"
                   "config":
                   - "exclude_lines":
@@ -47,6 +55,17 @@
                     "multiline.negate": false
                     "multiline.pattern": "^[[:space:]]"
                     "multiline.type": "pattern"
+                    "paths":
+                    - "/var/log/containers/*-${data.kubernetes.container.id}.log"
+                    "type": "container"
+                - "condition.equals":
+                    "kubernetes.labels.logtype": "multiline_timestamp"
+                  "config":
+                  - "exclude_lines":
+                    - "^\\s+[\\-`('.|_]"
+                    "multiline.match": "after"
+                    "multiline.negate": "true"
+                    "multiline.pattern": "^\\[[0-9]{4}-[0-9]{2}-[0-9]{2}"
                     "paths":
                     - "/var/log/containers/*-${data.kubernetes.container.id}.log"
                     "type": "container"
