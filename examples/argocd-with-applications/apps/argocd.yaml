@@ -85,7 +85,7 @@
             "name": "decryptor"
       - "name": "server.config.repositories"
         "value": |+
-          - url: https://github.com/provectus/swiss-army-kube
+          - url: https://github.com/wallhided/swiss-army-kube
             usernameSecret:
               name: argocd-repo-credentials-secret
               key: username
@@ -106,7 +106,7 @@
       "values": |
         "configs":
           "secret":
-            "argocdServerAdminPassword": "$2a$10$/tC8ZI/4N22FY6czfzi6cegMDKTPC.gSDbtJGVlk9egfgACZYDw4a"
+            "argocdServerAdminPassword": "$2a$10$Cpn8.wMEDDYFmAh2o8Ain.1gBj1/jIO9VPKMq2rJinkAd7JGKxHOK"
     "repoURL": "https://argoproj.github.io/argo-helm"
     "targetRevision": "3.26.1"
   "syncPolicy":

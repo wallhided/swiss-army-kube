@@ -17,7 +17,7 @@
       - "name": "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-backend-protocol"
         "value": "http"
       - "name": "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-ssl-cert"
-        "value": "arn:aws:acm:eu-north-1:394544957709:certificate/bc910587-cba9-4422-8360-6f9c92c4bd21"
+        "value": "arn:aws:acm:eu-north-1:394544957709:certificate/92a89717-cbd0-406c-96cf-405c4e40bfbf"
       - "name": "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-ssl-ports"
         "value": "https"
       - "name": "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-type"
