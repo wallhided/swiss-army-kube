@@ -59,9 +59,3 @@ module "argocd" {
   }
 }
 
-module external_dns {
-  source       = "github.com/provectus/sak-external-dns"
-  cluster_name = module.kubernetes.cluster_name
-  argocd       = module.argocd.state
-  hostedzones  = ["your.hosted.zones"]     # Provide your hosted zones (description in Input section)
-}
