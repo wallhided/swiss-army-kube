@@ -58,3 +58,11 @@ module "argocd" {
     "server.ingress.paths[0]" = "/"
   }
 }
+
+module "alb-ingress" {
+  depends_on   = [module.argocd]
+  source       = "github.com/provectus/sak-alb-controller"
+  cluster_name = module.kubernetes.cluster_name
+  vpc_id       = module.network.vpc_id
+  argocd       = module.argocd.state
+}

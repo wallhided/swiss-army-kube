@@ -1,0 +1,44 @@
+"apiVersion": "argoproj.io/v1alpha1"
+"kind": "Application"
+"metadata":
+  "name": "alb"
+  "namespace": "argocd"
+"spec":
+  "destination":
+    "namespace": "kube-system"
+    "server": "https://kubernetes.default.svc"
+  "project": "default"
+  "source":
+    "chart": "aws-load-balancer-controller"
+    "helm":
+      "parameters":
+      - "name": "clusterName"
+        "value": "swiss-army-kube-dmiroshnik"
+      - "name": "createIngressClassResource"
+        "value": "true"
+      - "name": "disableIngressClassAnnotation"
+        "value": "false"
+      - "name": "ingressClass"
+        "value": "alb"
+      - "name": "region"
+        "value": "eu-north-1"
+      - "name": "resources.limits.cpu"
+        "value": "100m"
+      - "name": "resources.limits.memory"
+        "value": "128Mi"
+      - "name": "resources.requests.cpu"
+        "value": "50m"
+      - "name": "resources.requests.memory"
+        "value": "64Mi"
+      - "name": "serviceAccount.create"
+        "value": "false"
+      - "name": "serviceAccount.name"
+        "value": "alb"
+      - "name": "vpcId"
+        "value": "vpc-0202a6a1d2c592656"
+    "repoURL": "https://aws.github.io/eks-charts"
+    "targetRevision": "1.4.2"
+  "syncPolicy":
+    "automated":
+      "prune": true
+      "selfHeal": true
