@@ -35,7 +35,7 @@
       - "name": "serviceAccount.name"
         "value": "alb"
       - "name": "vpcId"
-        "value": "vpc-0202a6a1d2c592656"
+        "value": "vpc-0cddbe39565055cc7"
     "repoURL": "https://aws.github.io/eks-charts"
     "targetRevision": "1.4.2"
   "syncPolicy":

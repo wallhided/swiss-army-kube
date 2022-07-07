@@ -78,12 +78,4 @@ module "alb-ingress" {
 #  hostedzones = []
 #}
 
-module "prometheus" {
-  depends_on      = [module.argocd]
-#  source          = "github.com/provectus/sak-prometheus?ref=feature//update-module"
-  source = "/Users/dmiroshnik/work/provectus/sak-prometheus"
-  cluster_name    = module.kubernetes.cluster_name
-  argocd          = module.argocd.state
-  domains         = local.domain
-  tags            = {}
-}
+
