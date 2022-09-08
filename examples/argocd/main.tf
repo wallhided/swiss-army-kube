@@ -58,3 +58,12 @@ module "argocd" {
     "server.ingress.paths[0]" = "/"
   }
 }
+
+
+module "nginx" {
+  source       = "git::https://github.com/provectus/sak-nginx.git"
+  cluster_name = module.kubernetes.cluster_name
+  argocd       = module.argocd.state
+  conf = {}
+  tags = local.tags
+}
