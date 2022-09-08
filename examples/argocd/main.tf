@@ -65,5 +65,5 @@ module "nginx" {
   cluster_name = module.kubernetes.cluster_name
   argocd       = module.argocd.state
   conf = {}
-  tags = local.tags
+  tags = {}
 }
