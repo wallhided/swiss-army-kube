@@ -110,7 +110,7 @@
         "value": "/custom-binaries"
       - "name": "server.config.repositories"
         "value": |+
-          - url: https://github.com/wallhided/swiss-army-kube
+          - url: https://github.com/provectus/swiss-army-kube
             usernameSecret:
               name: argocd-repo-credentials-secret
               key: username
