@@ -105,7 +105,7 @@
       "values": |
         "configs":
           "secret":
-            "argocdServerAdminPassword": "$2a$10$uK3uDtMo1c2nOzk9D5ez7uhhtO7L2esyEpRbG8Ga0.0ocfNp0N1EG"
+            "argocdServerAdminPassword": "$2a$10$xEhqkc19DfEG0TUqu7pnaOdaTRk6YKN/3kEF75KuHvhtBwaIEcLTG"
     "repoURL": "https://argoproj.github.io/argo-helm"
     "targetRevision": "5.5.8"
   "syncPolicy":
