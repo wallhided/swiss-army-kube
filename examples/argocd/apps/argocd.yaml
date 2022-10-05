@@ -93,19 +93,7 @@
       - "name": "repoServer.volumes[1].name"
         "value": "custom-binaries"
       - "name": "server.config.configManagementPlugins"
-        "value": |
-          - "generate":
-              "args":
-              - "/opt/decryptor/bin/decryptor"
-              "command":
-              - "/usr/bin/python3"
-            "init":
-              "args":
-              - "install"
-              - "boto3"
-              "command":
-              - "/usr/bin/pip3"
-            "name": "decryptor"
+        "value": ""
       - "name": "server.config.kustomize\\.path\\.v3\\.2\\.0"
         "value": "/custom-binaries"
       - "name": "server.config.repositories"

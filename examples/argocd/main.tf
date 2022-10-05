@@ -40,7 +40,7 @@ module "kubernetes" {
 
 module "argocd" {
   depends_on = [module.network.vpc_id, module.kubernetes.cluster_name, data.aws_eks_cluster.cluster]
-  source     = "github.com/provectus/sak-argocd"
+  source     = "../../../../provectus/sak-argocd/"
 
   branch       = var.argocd.branch
   owner        = var.argocd.owner
@@ -59,10 +59,14 @@ module "argocd" {
   }
 }
 
-module "nginx" {
-  source       = "git::https://github.com/provectus/sak-nginx.git"
-  cluster_name = module.kubernetes.cluster_name
-  argocd       = module.argocd.state
-  conf = {}
-  tags = {}
+output "test" {
+  value = module.argocd.var
 }
+#module "nginx" {
+#  source       = "git::https://github.com/provectus/sak-nginx.git"
+#  cluster_name = module.kubernetes.cluster_name
+#  argocd       = module.argocd.state
+#  conf = {}
+#  tags = {}
+#oo
+#}
