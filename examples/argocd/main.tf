@@ -151,9 +151,9 @@ module "argocd" {
   path_prefix  = "examples/argocd/"
 }
 
-#module "nginx" {
-#  source       = "git::https://github.com/provectus/sak-nginx.git"
-#  argocd       = module.argocd.state
-#  conf = {}
-#  tags = {}
-#}
+module "nginx" {
+  source       = "git::https://github.com/provectus/sak-nginx.git"
+  argocd       = module.argocd.state
+  conf = {}
+  tags = {}
+}
