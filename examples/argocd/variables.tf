@@ -61,8 +61,8 @@ variable "domain_name" {
 variable "argocd" {
   default = {
     repository = "swiss-army-kube"
-    branch     = "master"
-    owner      = "provectus"
+    branch     = "test_test_sak"
+    owner      = "wallhided"
   }
   type        = map(string)
   description = "A set of values for enabling deployment through ArgoCD"
@@ -71,7 +71,7 @@ variable "argocd" {
 variable "cluster_version" {
   type        = string
   description = "EKS cluster version"
-  default     = "1.21"
+  default     = "1.22"
 }
 
 

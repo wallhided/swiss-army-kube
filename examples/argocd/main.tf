@@ -68,8 +68,8 @@ module "eks" {
   enable_irsa = false
 
 
-  manage_aws_auth_configmap = true
-  create_aws_auth_configmap = true
+  manage_aws_auth_configmap              = true
+  create_aws_auth_configmap              = true
   # NOTE:
   #  enable cloudwatch logging
   cluster_enabled_log_types              = var.cloudwatch_logging_enabled ? var.cloudwatch_cluster_log_types : []
@@ -83,7 +83,7 @@ module "eks" {
 
   self_managed_node_group_defaults = {
     update_launch_template_default_version = true
-    iam_role_additional_policies = [
+    iam_role_additional_policies           = [
       "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
       "arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess",
       "arn:aws:iam::aws:policy/AmazonRoute53FullAccess",
@@ -102,13 +102,14 @@ module "eks" {
   #   After that autoscaler is able to see the resources on that ASG.
   #
   self_managed_node_groups = {
-    one = {
-      name         = "mixed-1"
+    memory-optimized = {
+      # expected length of name to be in the range (1 - 38)
+      name         = "${local.environment}-${local.cluster_name}-memory"
       max_size     = 3
       desired_size = 1
 
       use_mixed_instances_policy = true
-      mixed_instances_policy = {
+      mixed_instances_policy     = {
         instances_distribution = {
           on_demand_base_capacity                  = 0
           on_demand_percentage_above_base_capacity = 10
@@ -140,22 +141,19 @@ resource "aws_iam_openid_connect_provider" "cluster" {
 
 
 module "argocd" {
-  depends_on = [module.vpc.vpc_id, module.eks.cluster_id, data.aws_eks_cluster.cluster]
-  source     = "github.com/provectus/sak-argocd"
+  depends_on = [module.vpc, module.eks]
+  source     = "github.com/provectus/sak-argocd.git"
 
   branch       = var.argocd.branch
   owner        = var.argocd.owner
   repository   = var.argocd.repository
   cluster_name = module.eks.cluster_id
   path_prefix  = "examples/argocd/"
-
-  domains = local.domain
-  ingress_annotations = {
-    "nginx.ingress.kubernetes.io/ssl-redirect" = "false"
-    "kubernetes.io/ingress.class"              = "nginx"
-  }
-  conf = {
-    "server.service.type"     = "ClusterIP"
-    "server.ingress.paths[0]" = "/"
-  }
 }
+
+#module "nginx" {
+#  source       = "git::https://github.com/provectus/sak-nginx.git"
+#  argocd       = module.argocd.state
+#  conf = {}
+#  tags = {}
+#}
