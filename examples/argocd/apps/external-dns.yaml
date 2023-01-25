@@ -15,7 +15,7 @@
       - "name": "aws.region"
         "value": "eu-north-1"
       - "name": "domainFilters[0]"
-        "value": "sak.ninja"
+        "value": "dmiroshnik.public.sak"
       - "name": "rbac.create"
         "value": "true"
       - "name": "resources.limits.cpu"
