@@ -1,0 +1,74 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+    name: grafana
+    namespace: argocd
+spec:
+    destination:
+        namespace: monitoring
+        server: https://kubernetes.default.svc
+    project: default
+    source:
+        chart: grafana
+        helm:
+            parameters:
+                - name: adminPassword
+                  value: 'AQICAHgLyKkfKxS84tXFDYhlyyaAim1Ixcdsn6bCdCs9DsPXawFqUXICl1kDDRKVEjy1IzqVAAAAbjBsBgkqhkiG9w0BBwagXzBdAgEAMFgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMvM9tq6YqI98CC/I6AgEQgCvtC6tk5pOzIKs6Tz7lMgBkHqfoRhlGzTBHdYdGUBNDH3+Mhxiqc7n59uXN:'
+                - name: env.GF_AUTH_GOOGLE_ALLOWED_DOMAINS
+                  value: local
+                - name: env.GF_AUTH_GOOGLE_CLIENT_ID
+                  value: ""
+                - name: env.GF_AUTH_GOOGLE_CLIENT_SECRET
+                  value: ""
+                - name: env.GF_AUTH_GOOGLE_ENABLED
+                  value: "false"
+                - name: env.GF_SERVER_ROOT_URL
+                  value: https://grafana.swiss-army-kube.swiss.sak.ninja
+                - name: ingress.annotations
+                  value: '{ kubernetes.io/tls-acme: ''true'' }'
+                - name: ingress.enabled
+                  value: "true"
+                - name: ingress.hosts[0]
+                  value: grafana.swiss-army-kube.swiss.sak.ninja
+                - name: ingress.ingressClassName
+                  value: nginx
+                - name: ingress.tls[0].hosts[0]
+                  value: grafana.swiss-army-kube.swiss.sak.ninja
+                - name: ingress.tls[0].secretName
+                  value: grafana-tls
+                - name: namespace
+                  value: monitoring
+                - name: persistence.enabled
+                  value: "true"
+                - name: persistence.size
+                  value: 10Gi
+            values: |
+                "datasources.yaml":
+                  "apiVersion": "1"
+                  "datasources":
+                  - "access": "proxy"
+                    "isDefault": true
+                    "name": "Prometheus"
+                    "type": "prometheus"
+                    "url": "http://thanos-query:9090"
+        repoURL: https://grafana.github.io/helm-charts
+        targetRevision: 6.32.0
+    syncPolicy:
+        automated:
+            prune: true
+            selfHeal: true
+sops:
+    kms:
+        - arn: arn:aws:kms:eu-north-1:641456973426:key/66558caa-6d94-4d81-887b-7f30b67c815f
+          created_at: "2023-02-17T12:32:12Z"
+          enc: AQICAHgFHZbEohKFf7aze6G4oTXr6ATRj59p+hCTIs3f1atGtwET8Bl48K9hhPSKBgTEBFBrAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM+wCjLwEnqUosGvh3AgEQgDvPhvqwPhu6HSx68eN6Nm/5ucCxutBXyr8WjgrmDv29SffB4RmcxGPPsG9QjEuvLSsswM4BiMSxScSA4Q==
+          aws_profile: ""
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2023-02-17T12:32:13Z"
+    mac: ENC[AES256_GCM,data:3lYWYZoPY7Dv7UT7LB6pl85In8pBMQl0lbDSNNCLB7R+hWW7muAZ0LYs54QesV6uwT5fYisluiQF0UD9YTMK+vlfdGMfpKTR+1TSe34qCvSa5ygSj8uMvt9MH0Xo9AgmmBzuJuQpN4t0lUaKcHl83xzqPbuVD6vfty4YZAGsUPw=,iv:l4bIMHkBQRpPzg6f31hOGg+ISHvsc/Va0SFFQIonF8k=,tag:tG6GYGyUGauW3fcYsu0RSA==,type:str]
+    pgp: []
+    encrypted_regex: ^adminPassword$
+    version: 3.7.3
